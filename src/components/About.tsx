@@ -1,7 +1,6 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { User, MapPin, Mail, Phone, FileText, GitHub, Linkedin } from "lucide-react";
+import { User, MapPin, Mail, Phone, FileText, Github, Linkedin } from "lucide-react";
 
 const About = () => {
   const [showQuote, setShowQuote] = useState(false);
@@ -63,7 +62,7 @@ const About = () => {
                 aria-label="GitHub Profile"
                 className="w-10 h-10 flex items-center justify-center rounded-full bg-white border border-gray-200 text-primary hover:bg-primary hover:text-white transition-colors"
               >
-                <GitHub size={18} />
+                <Github size={18} />
               </a>
               <Button asChild variant="outline" className="ml-2">
                 <a 
