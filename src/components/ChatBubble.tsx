@@ -3,6 +3,13 @@ import React, { useEffect } from 'react';
 import { MessageCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
+// Add TypeScript interface for the window.chatbase property
+declare global {
+  interface Window {
+    chatbase: any;
+  }
+}
+
 const ChatBubble = () => {
   const [isOpen, setIsOpen] = React.useState(false);
 
