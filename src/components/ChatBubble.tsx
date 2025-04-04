@@ -15,6 +15,11 @@ const ChatBubble = () => {
 
   // Initialize Chatbase when the component mounts
   useEffect(() => {
+    // Authentication setup - Using a dummy user ID for demonstration
+    // In a real app, you'd get this from your auth system
+    const userId = 'user-' + Math.random().toString(36).substr(2, 9);
+    const secret = 'your-secret-key'; // This should be securely managed
+    
     // Only initialize once when the component mounts
     const script = document.createElement('script');
     script.innerHTML = `
@@ -46,6 +51,15 @@ const ChatBubble = () => {
       })();
     `;
     document.head.appendChild(script);
+
+    // Set up chatbase with user identity if needed
+    // This would typically happen after the script loads
+    window.addEventListener('load', () => {
+      if (window.chatbase) {
+        // You can use this to set user identity if Chatbase supports it
+        // window.chatbase('updateUser', { userId, hash });
+      }
+    });
 
     return () => {
       // Clean up if needed

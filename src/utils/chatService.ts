@@ -1,5 +1,5 @@
-// This file is now a placeholder since we're using Chatbase for chat functionality
-// The Chatbase script is loaded directly in the ChatBubble component
+
+// This file provides utility functions for chat authentication and integration with Chatbase
 
 // Type definition for chat messages (kept for reference)
 export interface ChatMessage {
@@ -8,6 +8,30 @@ export interface ChatMessage {
   sender: 'user' | 'bot';
   timestamp: Date;
 }
+
+/**
+ * Generates a hash for authenticating with chat services
+ * @param userId The user's unique identifier
+ * @param secret The secret key used for hash generation
+ * @returns The generated hash
+ */
+export const generateChatHash = (userId: string, secret: string): string => {
+  // In a browser environment, we'd use the Web Crypto API instead of Node's crypto
+  // This is just for reference - actual implementation would depend on your environment
+  
+  // Example using a simple hash algorithm (not for production)
+  let hash = 0;
+  for (let i = 0; i < userId.length; i++) {
+    const char = userId.charCodeAt(i);
+    hash = ((hash << 5) - hash) + char;
+    hash = hash & hash; // Convert to 32bit integer
+  }
+  return hash.toString(16);
+  
+  // In Node.js environment, you would use:
+  // const crypto = require('crypto');
+  // return crypto.createHmac('sha256', secret).update(userId).digest('hex');
+};
 
 // These functions are no longer used as Chatbase handles the chat functionality
 export const sendMessage = async (content: string): Promise<ChatMessage> => {
