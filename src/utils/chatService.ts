@@ -1,13 +1,7 @@
+// This file is now a placeholder since we're using Chatbase for chat functionality
+// The Chatbase script is loaded directly in the ChatBubble component
 
-// This is a placeholder for your actual chat service integration
-// You would replace this with the actual API calls to your chat service
-
-// The authentication code you provided would typically be implemented on server-side
-// const crypto = require('crypto');
-// const secret = '•••••••••'; // Your verification secret key
-// const userId = 'user-id'; // A string UUID to identify your user
-// const hash = crypto.createHmac('sha256', secret).update(userId).digest('hex');
-
+// Type definition for chat messages (kept for reference)
 export interface ChatMessage {
   id: string;
   content: string;
@@ -15,19 +9,19 @@ export interface ChatMessage {
   timestamp: Date;
 }
 
+// These functions are no longer used as Chatbase handles the chat functionality
 export const sendMessage = async (content: string): Promise<ChatMessage> => {
-  // This would be an API call to your chat service
-  // For now, we're just returning a mock response
+  console.warn('sendMessage is deprecated, using Chatbase instead');
   return {
     id: Date.now().toString(),
-    content: "This is a mock response. Please implement the actual chat service integration.",
+    content: "This function is deprecated. Using Chatbase for chat functionality.",
     sender: 'bot',
     timestamp: new Date()
   };
 };
 
 export const initializeChat = async (): Promise<{ userId: string; hash: string }> => {
-  // In a real implementation, this would call your backend to get the userId and hash
+  console.warn('initializeChat is deprecated, using Chatbase instead');
   return {
     userId: 'anonymous-user',
     hash: 'placeholder-hash'

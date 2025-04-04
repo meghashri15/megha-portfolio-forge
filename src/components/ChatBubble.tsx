@@ -1,73 +1,73 @@
 
-import React, { useState, useEffect } from 'react';
-import { MessageCircle, X } from 'lucide-react';
+import React, { useEffect } from 'react';
+import { MessageCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const ChatBubble = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [userId, setUserId] = useState('anonymous-user');
-  const [hash, setHash] = useState('');
+  const [isOpen, setIsOpen] = React.useState(false);
 
-  // This function would normally be done on the server side for security
-  // For now, we're using a placeholder approach
+  // Initialize Chatbase when the component mounts
   useEffect(() => {
-    // In a real implementation, you would fetch this from your backend
-    // The crypto operations should be done on the server-side
-    setUserId('anonymous-user');
-    setHash('placeholder-hash');
+    // Only initialize once when the component mounts
+    const script = document.createElement('script');
+    script.innerHTML = `
+      (function(){
+        if(!window.chatbase||window.chatbase("getState")!=="initialized"){
+          window.chatbase=(...arguments)=>{
+            if(!window.chatbase.q){window.chatbase.q=[]}
+            window.chatbase.q.push(arguments)
+          };
+          window.chatbase=new Proxy(window.chatbase,{
+            get(target,prop){
+              if(prop==="q"){return target.q}
+              return(...args)=>target(prop,...args)
+            }
+          })
+        }
+        const onLoad=function(){
+          const script=document.createElement("script");
+          script.src="https://www.chatbase.co/embed.min.js";
+          script.id="Fi4jNPgFTpKEjEMDiMngI";
+          script.domain="www.chatbase.co";
+          document.body.appendChild(script)
+        };
+        if(document.readyState==="complete"){
+          onLoad()
+        }else{
+          window.addEventListener("load",onLoad)
+        }
+      })();
+    `;
+    document.head.appendChild(script);
+
+    return () => {
+      // Clean up if needed
+      document.head.removeChild(script);
+    };
   }, []);
 
   const toggleChat = () => {
     setIsOpen(!isOpen);
+    
+    // Toggle the Chatbase widget visibility
+    if (window.chatbase) {
+      if (!isOpen) {
+        window.chatbase('show');
+      } else {
+        window.chatbase('hide');
+      }
+    }
   };
 
   return (
     <div className="fixed bottom-6 right-6 z-50">
-      {isOpen ? (
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg w-80 sm:w-96 h-96 flex flex-col overflow-hidden animate-scale-in">
-          <div className="bg-primary p-4 text-white flex justify-between items-center">
-            <h3 className="font-medium">Chat with Megha</h3>
-            <Button 
-              variant="ghost" 
-              size="icon" 
-              onClick={toggleChat}
-              className="text-white hover:bg-primary/90"
-            >
-              <X size={18} />
-            </Button>
-          </div>
-          
-          <div className="flex-1 p-4 overflow-y-auto">
-            <div className="bg-muted p-3 rounded-lg mb-2 max-w-[80%]">
-              <p className="text-sm">Hi there! How can I help you today?</p>
-            </div>
-            
-            {/* Placeholder for actual chat integration */}
-            <div className="bg-gray-100 p-3 rounded-lg ml-auto max-w-[80%]">
-              <p className="text-sm">This is where your actual chat integration will go.</p>
-            </div>
-          </div>
-          
-          <div className="p-3 border-t">
-            <div className="flex gap-2">
-              <input 
-                type="text" 
-                placeholder="Type your message..." 
-                className="flex-1 border rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary"
-              />
-              <Button size="sm">Send</Button>
-            </div>
-          </div>
-        </div>
-      ) : (
-        <Button
-          onClick={toggleChat}
-          className="rounded-full h-14 w-14 flex items-center justify-center shadow-lg hover:shadow-xl transition-all"
-          aria-label="Open chat"
-        >
-          <MessageCircle size={24} />
-        </Button>
-      )}
+      <Button
+        onClick={toggleChat}
+        className="rounded-full h-14 w-14 flex items-center justify-center shadow-lg hover:shadow-xl transition-all"
+        aria-label="Open chat"
+      >
+        <MessageCircle size={24} />
+      </Button>
     </div>
   );
 };
